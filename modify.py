@@ -22,6 +22,7 @@ if __name__ == '__main__':
     from sys import argv
     import os
     for fname in argv[1:]:
+        print(fname+':')
         if os.path.isfile(fname):
             modify(fname,',')
 
