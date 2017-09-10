@@ -17,7 +17,12 @@ def data_process(fname):
     df['pore_pressure'] = df['孔压']-df['孔压'][0]
     df['back_pressure'] = df['反压']-df['反压'][0]
 
-def 
+def dynamic_elastic_modulus():
+
+
+def damping_ratio():
+
+    
 
 if __name__ == '__main__':
     for file in sys.argv[1:]:
