@@ -8,8 +8,8 @@ from numpy.linalg import eig, inv
 def area_of_loop(loop):
     """滞回圈的面积"""
     area = 0
-    for i in range(len(loop)):
-        area += np.linalg.det([loop[i-1], loop[i]])
+    for i, val in enumerate(loop):
+        area += np.linalg.det([loop[i-1], val])
     return -0.5*area    # 顺时针遍历是负值，所以乘以-0.5
 
 def damping_ratio_nofit(loop):
@@ -18,8 +18,8 @@ def damping_ratio_nofit(loop):
     """
     # x1, y1 = max(loop[:, 0]), max(loop[:, 1])
     # x3, y3 = min(loop[:, 0]), min(loop[:, 1])
-    x1, y1 = max(loop[loop[1] > 0], key=lambda x: x.dot(x))
-    x3, y3 = max(loop[loop[1] < 0], key=lambda x: x.dot(x))
+    x1, y1 = max(loop[loop[:,1] > 0], key=lambda x: x.dot(x))
+    x3, y3 = max(loop[loop[:,1] < 0], key=lambda x: x.dot(x))
     area_t = (x1-x3)*(y1-y3)/2
     damping_ratio = area_of_loop(loop)/area_t/np.pi
     return (damping_ratio, (x1, y1), (x3, y3))
@@ -84,13 +84,21 @@ def damping_ratio_byfit(loop, xscale=1, yscale=1):
     aa = fitEllipse(x, y)
     center = ellipse_center(aa)
     phi = ellipse_angle_of_rotation(aa)
-    a, b = ellipse_axis_length(aa)
+    a, b = ellipse_axis_length(aa)    #长短半轴
     if a < b:
         a, b = b, a
     xx = (center[0] + a*np.cos(R)*np.cos(phi) - b*np.sin(R)*np.sin(phi))/xscale
     yy = (center[1] + a*np.cos(R)*np.sin(phi) + b*np.sin(R)*np.cos(phi))/yscale
-    area_t = a*np.cos(phi)*a*np.sin(phi)/2
+    epsilon_m = 0.5*a*np.cos(phi)    #椭圆顶点的x值，动应变顶点
+    sigma_m = 0.5*a*np.sin(phi)      #椭圆定点的y值，动应力顶点
+    area_t = a*np.cos(phi)*a*np.sin(phi)/2    #小三角形面积
     area_e = np.pi*a*b
     damping_ratio = area_e/area_t/4/np.pi
     #print([area_e, area_t, damping_ratio])
     return (damping_ratio, (xx, yy))
+
+def modulus_nofit(loop):
+    epsilon_m, sigma_m = max(loop[loop[1] > 0], key=lambda x: x.dot(x))
+    return (epsilon_m, sigma_m, sigma_m/epsilon_m)
+
+
