@@ -53,7 +53,7 @@ class Ellipse:
         print('Ellipse class')
         print('center: ({0:.2e}, {1:.2f})'.format(self.center[0], self.center[1]))
         print('axis length: ({0:.2e}, {1:.2f})'.format(self.axis_length[0], self.axis_length[1]))
-        print('angle_of_rotation: {0:.2f})'.format(self.angle_of_rotation)
+        print('angle_of_rotation: {0:.2f})'.format(self.angle_of_rotation))
         print('ellipse area: {0:.2e}'.format(self.area()))
         print('ellipse area of scatters: {0:.2e}'.format(self.area_scatters()))
         print('tri area: {0:.2e}'.format(self.tri_area()))
