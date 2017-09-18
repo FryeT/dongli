@@ -16,7 +16,7 @@ def data_process(fname):
     df.drop(drop_cols, 1, inplace=True) #remove cols that not needed
     df.dropna(inplace=True)
     df['sigma_d'] = (df['力']-df['力'][0])/A0
-    df['epsilon_d'] = (df['变形']-df['变形'][0])/H0*1000
+    df['epsilon_d'] = (df['变形']-df['变形'][0])/H0
     df['d1'] = (df['轴位移']-df['轴位移'][0])/H0
     df['pore_pressure'] = df['孔压']-df['孔压'][0]
     df['back_pressure'] = df['反压']-df['反压'][0]

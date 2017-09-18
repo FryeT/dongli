@@ -1,7 +1,7 @@
 # coding: utf-8
 import numpy as np
 from dynamic_algs import *
-
+import matplotlib.pyplot as plt
 
 class Ellipse:
     def __init__(self, aa):
@@ -92,11 +92,18 @@ class DynamicLoop:
     def modulus_byfit(self):
         return self.sigma_m_byfit()/self.epsilon_m_byfit()
 
+    def center(self):
+        return self.ellipse_byfit().center
+    
+    def loop_to_center(self):
+        xc, yc = self.center()
+        return (self.loop_x-xc, self.loop_y-yc) 
+
     def sigma_m(self):
-        return self.loop_y.max()
+        return self.loop_to_center()[1].max()
 
     def epsilon_m(self):
-        return self.loop_x.max()
+        return self.loop_to_center()[0].max()
 
     def modulus(self):
         return self.sigma_m()/self.epsilon_m()
@@ -108,7 +115,16 @@ class DynamicLoop:
         x1, y1 = max(self.loop_x), max(self.loop_y)    #见吴世明《土动力学》p85
         x3, y3 = min(self.loop_x), min(self.loop_y)    #见吴世明《土动力学》p85
         return 0.5*(x1-x3)*(y1-y3)
-    
+
     def damping_ratio(self):
         return self.area()/self.tri_area()/np.pi
 
+    def plot_to_center(self, plot_loop=True, plot_fit=True):
+        e = self.ellipse_byfit()    #ellipse
+        ex, ey = e.scatters_to_center()
+        lx, ly = self.loop_to_center()
+        if plot_loop == True:
+            plt.plot(lx, ly, label='loop')
+        if plot_fit == True:
+            plt.plot(ex, ey, label='fit')
+        
