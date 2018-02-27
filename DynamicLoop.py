@@ -119,12 +119,12 @@ class DynamicLoop:
     def damping_ratio(self):
         return self.area()/self.tri_area()/np.pi
 
-    def plot_to_center(self, plot_loop=True, plot_fit=True):
+    def plot_to_center(self, plot_loop=True, plot_fit=True, xscale=10000, yscale=1):
         e = self.ellipse_byfit()    #ellipse
         ex, ey = e.scatters_to_center()
         lx, ly = self.loop_to_center()
         if plot_loop == True:
-            plt.plot(lx, ly, label='loop')
+            plt.plot(lx*xscale, ly*yscale, label='loop')
         if plot_fit == True:
-            plt.plot(ex, ey, label='fit')
+            plt.plot(ex*xscale, ey*yscale, label='fit')
         
